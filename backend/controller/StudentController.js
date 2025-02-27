@@ -13,7 +13,9 @@ const CreatStudent = async (req, res) => {
 
 //Read Data
 const ReadStudent = async (req, res) => {
-        const ReadData = await StudentModel.find()
+        const perPage = req.query.pages || 0
+        const NumberOfStudents = 2
+        const ReadData = await StudentModel.find().skip(NumberOfStudents*perPage).limit(NumberOfStudents)
         if (ReadData) {
                 res.send(ReadData)
         }
@@ -32,7 +34,7 @@ const ReadSingleData = async (req, res) => {
 
 // update the data
 
-const UpdateStudent =async(req, res) => {
+const UpdateStudent = async(req, res) => {
         const updateData = await StudentModel.updateOne({ _id: req.params.id }, { $set: req.body })
         if (updateData) {
                 res.send("updated successfully")

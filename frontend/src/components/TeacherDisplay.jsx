@@ -5,10 +5,20 @@ import { NavLink } from "react-router-dom";
 
 function TeacherDisplay() {
   const [data, setData] = useState([]);
+  const [page, setpage] = useState(0);
+
+  const handleNext = () => {
+    setpage(page + 1);
+  };
+  const handlePrev = () => {
+    if (page > 0) {
+      setpage(page - 1);
+    }
+  };
 
   const HandleGetData = () => {
     axios
-      .get("http://localhost:4000/read/teacher")
+      .get(`http://localhost:4000/read/teacher?page=${page}`)
       .then((res) => {
         setData(res.data);
       })
@@ -19,7 +29,7 @@ function TeacherDisplay() {
 
   useEffect(() => {
     HandleGetData();
-  }, []);
+  }, [page]);
 
   const RemoveData = (_id) => {
     axios
@@ -119,6 +129,21 @@ function TeacherDisplay() {
             </tbody>
           </table>
         </div>
+      </div>
+
+      <div class="flex space-x-2 p-4">
+        <button
+          onClick={handlePrev}
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Brev
+        </button>
+        <button
+          onClick={handleNext}
+          class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+        >
+          Next
+        </button>
       </div>
     </div>
   );

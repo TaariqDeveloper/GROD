@@ -13,7 +13,9 @@ const CreateTeacher = async (req, res) => {
 //read the all data
 
 const ReadData = async (req, res) => {
-        const Read = await teacherModel.find()
+        const perPage = req.query.page || 0
+        const numberOfTeacgers= 1
+        const Read = await teacherModel.find().skip(numberOfTeacgers*perPage).limit(numberOfTeacgers)
         if (Read) {
                 res.send(Read)
         }
@@ -47,4 +49,13 @@ const DeletTeacher = async (req, res) => {
         }
 }
 
-module.exports = {CreateTeacher, ReadData, SingleData, UpdateTeacher , DeletTeacher }
+
+
+// display all teachers 
+const TotalTeacher = async (req, res) => {
+        const total = await teacherModel.find().countDocuments()
+        if (total) {
+                res.send({total})
+        }
+}
+module.exports = {CreateTeacher, ReadData, SingleData, UpdateTeacher , DeletTeacher , TotalTeacher }
